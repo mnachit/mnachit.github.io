@@ -566,31 +566,30 @@
 			</div>
 			<div class="choose animate-box">
 				<h2>Contact</h2>
-				<form action="#">
+				<form id="form">
 					<div class="row form-group">
 						<div class="col-md-6">
-							<input type="text" id="fname" class="form-control" placeholder="Your firstname">
+							<input type="text" id="fname" class="form-control" placeholder="Your firstname"
+								name="from_name">
 						</div>
 					</div>
 					<div class="row form-group">
 						<div class="col-md-6">
-							<input type="text" id="lname" class="form-control" placeholder="Your lastname">
+							<input type="text" id="lname" class="form-control" placeholder="Your lastname"
+								name="to_name">
 						</div>
 					</div>
-
 					<div class="row form-group">
 						<div class="col-md-12">
-							<input type="text" id="email" class="form-control" placeholder="Your email address">
+							<input type="email" id="reply_to" class="form-control" placeholder="Your email address">
 						</div>
 					</div>
-
 					<div class="row form-group">
 						<div class="col-md-12">
-							<input type="text" id="subject" class="form-control"
-								placeholder="Your subject of this message">
+							<input type="text" id="subject" class="form-control" name="subject"
+								placeholder="Your subject of this message" name="message">
 						</div>
 					</div>
-
 					<div class="row form-group">
 						<div class="col-md-12">
 							<textarea name="message" id="message" cols="30" rows="10" class="form-control"
@@ -600,11 +599,93 @@
 					<div class="form-group">
 						<input type="submit" value="Send Message" class="btn btn-primary">
 					</div>
-
 				</form>
+
 			</div>
 		</div>
 	</div>
+
+	<!-- Bootstrap Modal -->
+	<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+
+	</div>
+
+	<div id="myModal" style="display: none;">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-center" id="loadingModalLabel">Success</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Email was sent successfully
+				</div>
+			</div>
+		</div>
+	</div>
+	<style>
+		#myModal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-dialog-centered {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+		}
+
+		.modal-dialog.modal-lg {
+			max-width: 800px;
+		}
+
+		.modal-content {
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+		}
+
+		.modal-header {
+			border-bottom: none;
+		}
+
+		.modal-title {
+			font-size: 2rem;
+			color: #28a745;
+			/* Bootstrap success color */
+		}
+
+		.modal-body {
+			font-size: 1.5rem;
+			text-align: center;
+			color: #333;
+		}
+
+		.close {
+			font-size: 1.5rem;
+			color: #aaa;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #000;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+
+
 
 	<div id="fh5co-footer" class="text-center">
 		<p>
@@ -643,6 +724,37 @@
 
 	<!-- Main -->
 	<script src="js/main.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+	<script type="text/javascript">
+		emailjs.init('iEbSIqW81I6HIjrh9')
+
+		document.getElementById('form').addEventListener('submit', function (event) {
+			event.preventDefault();
+
+			const serviceID = 'default_service';
+			const templateID = 'template_tgbf01t';
+
+			emailjs.sendForm(serviceID, templateID, this)
+				.then(() => {
+					var modal = document.getElementById("myModal");
+					modal.style.display = "block";
+
+					setTimeout(function () {
+						modal.style.display = "none";
+					}, 2000);
+				})
+				.catch((err) => {
+					alert(JSON.stringify(err));
+				});
+		});
+
+
+	</script>
+
+
+
+
 
 </body>
 
